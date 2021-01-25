@@ -1,0 +1,2 @@
+# GmailToCalendar
+Gmailから自動でGCalendarの予定を作成。AtCoderなどコンテスト系の予定で活用。
