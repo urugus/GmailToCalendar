@@ -38,10 +38,9 @@ function main(){
       var thread = threads[j];
       var messages = GmailApp.getMessagesForThread(thread);
       var message = messages[0];
-      Logger.log(setting_sheet.getRange("C2").getValue() == "A(.*?)\\d\\d\\d");
-      var subject_reg = new RegExp("A(.*?)\\d\\d\\d");
+      var subject_reg = new RegExp(data_dict['Title']);
       // Logger.log(reg);
-      var subject = message.getBody().match(subject_reg);
+      var subject = message.getBody().match(subject_reg)[0];
       Logger.log(subject);
     }
   }
