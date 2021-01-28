@@ -11,13 +11,13 @@ function arrayToDict(keys_array, values_array){
   //arrayはいずれも一次元配列
   dict = {}
   for(var i in keys_array){
-    key = keys_array[i]
-    value = Utilities.formatString(values_array[i]);
+    var key = keys_array[i];
+    var value = Utilities.formatString(values_array[i]);
     if(key != ""){
-      dict[key] = value
+      dict[key] = value;
     }
   }
-  return dict
+  return dict;
 }
 
 
@@ -38,10 +38,16 @@ function main(){
       var thread = threads[j];
       var messages = GmailApp.getMessagesForThread(thread);
       var message = messages[0];
-      var subject_reg = new RegExp(data_dict['Title']);
-      // Logger.log(reg);
-      var subject = message.getBody().match(subject_reg)[0];
-      Logger.log(subject);
+      var cal_subject = message.getBody().match(new RegExp(data_dict['Title']))[0];
+      var cal_body = message.getBody().match(new RegExp(data_dict['Body'],'g'))[0];
+      var start_time = message.getBody().match(new RegExp(data_dict['Date'],'g'))[0].replace(/-/g, '/').replace(/\([\s\S]\)/g, '');
+      var time = Number(message.getBody().match(new RegExp(data_dict['Time'],'g'))[0].replace(/[^0-9]/g, ''));
+      var cal_start_time = new Date(start_time);
+      Logger.log(cal_start_time);
+      var cal_end_time = new Date(cal_start_time.setMinutes(cal_start_time.getMinutes()+time));
+      Logger.log(cal_end_time);
+      var cal_option = {description: cal_body};
+      // CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time,cal_option);
     }
   }
 
