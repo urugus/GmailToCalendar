@@ -32,8 +32,9 @@ function main(){
 
   for(var i in data_array){
     var data_dict = arrayToDict(columns_array[0],data_array[i]);
-    Logger.log(data_dict);
-    const threads = GmailApp.search(data_dict['Search']);
+    // Logger.log(data_dict);
+    const gmail_label_name = data_dict['GmailLabel'];
+    const threads = GmailApp.search('label:'+ gmail_label_name +" "+ data_dict['Search']);
     for(var j in threads){
       var thread = threads[j];
       var messages = GmailApp.getMessagesForThread(thread);
@@ -58,6 +59,9 @@ function main(){
       }else{
         CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option);
       }
+      // カレンダー予定作成後、メールのラベルを外す（完了フラグとして）
+      var gmail_label = GmailApp.getUserLabelByName(gmail_label_name);
+      thread.removeLabel(gmail_label);
     }
   }
 
