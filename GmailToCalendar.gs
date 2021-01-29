@@ -43,11 +43,20 @@ function main(){
       var start_time = message.getBody().match(new RegExp(data_dict['Date'],'g'))[0].replace(/-/g, '/').replace(/\([\s\S]\)/g, '');
       var time = Number(message.getBody().match(new RegExp(data_dict['Time'],'g'))[0].replace(/[^0-9]/g, ''));
       var cal_start_time = new Date(start_time);
-      Logger.log(cal_start_time);
-      var cal_end_time = new Date(cal_start_time.setMinutes(cal_start_time.getMinutes()+time));
-      Logger.log(cal_end_time);
-      var cal_option = {description: cal_body};
-      // CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time,cal_option);
+      var cal_end_time = new Date(start_time);
+      cal_end_time.setMinutes(cal_start_time.getMinutes()+time);
+      var cal_location = message.getBody().match(new RegExp(data_dict['Location'],'g'))[0];
+      var cal_publication_setting = data_dict['Publication'];
+      var cal_option = {
+        description: cal_body,
+        location: cal_location
+      };
+      // 公開設定によって分岐
+      if(cal_publication_setting == 'Close'){
+        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option);
+      }else{
+        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option);
+      }
     }
   }
 
