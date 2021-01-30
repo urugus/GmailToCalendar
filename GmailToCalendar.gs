@@ -70,10 +70,10 @@ function main(){
       // 公開設定によって分岐
       if(cal_visibility == 'Close'){
         var visibility = CalendarApp.Visibility.PRIVATE;
-        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option).setVisibility(visibility).setColor(cal_color);
       }else{
-        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option).setColor(cal_color);
+        var visibility = CalendarApp.Visibility.PUBLIC;
       }
+      CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option).setVisibility(visibility).setColor(cal_color);
       // カレンダー予定作成後、メールのラベルを外す（完了フラグとして）
       var gmail_label = GmailApp.getUserLabelByName(gmail_label_name);
       thread.removeLabel(gmail_label);
