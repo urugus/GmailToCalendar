@@ -2,9 +2,23 @@ const CALENDAR_ID = '';
 const SHEET_ID = '1h2BO91iDwKwATLXMIactVUBU2Hc0TadREQy8t5bPWwc';
 const SHEET_NAME = 'Setting';
 
+const CALENDAR_COLOR = {
+  'PALE_BLUE':'1',
+  'PALE_GREEN':'2',
+  'MAUVE':'3',
+  'PALE_RED':'4',
+  'YELLOW':'5',
+  'ORANGE':'6',
+  'CYAN':'7',
+  'GRAY':'8',
+  'BLUE':'9',
+  'GREEN':'10',
+  'RED':'11',
+}
+
+
 function gmailToCalendar(query) {
   const threads = GmailApp.search(query);
-
 }
 
 function arrayToDict(keys_array, values_array){
@@ -48,6 +62,7 @@ function main(){
       cal_end_time.setMinutes(cal_start_time.getMinutes()+time);
       var cal_location = message.getBody().match(new RegExp(data_dict['Location'],'g'))[0];
       var cal_visibility = data_dict['Visibility '];
+      var cal_color = CALENDAR_COLOR[data_dict['Color']];
       var cal_option = {
         description: cal_body,
         location: cal_location
@@ -55,9 +70,9 @@ function main(){
       // 公開設定によって分岐
       if(cal_visibility == 'Close'){
         var visibility = CalendarApp.Visibility.PRIVATE;
-        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option).setVisibility(visibility);
+        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option).setVisibility(visibility).setColor(cal_color);
       }else{
-        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option);
+        CalendarApp.createEvent(cal_subject, cal_start_time, cal_end_time　,cal_option).setColor(cal_color);
       }
       // カレンダー予定作成後、メールのラベルを外す（完了フラグとして）
       var gmail_label = GmailApp.getUserLabelByName(gmail_label_name);
